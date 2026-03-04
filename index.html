@@ -812,12 +812,13 @@
      * DATA
      * Replace this constant with your full dataset (array of records).
      ******************************************************************/
-    const CREATURES = [
-      {"Name":"Pulse Bat (Nether)","Species":"Bat","Class":"Chaos","Health":31,"Attack":26,"Intelligence":14,"Defense":16,"Speed":33,"Tankiness":23.5,"Total":120,"R. Depth":null,"Source":"Nether Creatures","Trait Name":"Nether Shockwave","Item Name":"Nether Pulse Bat Wings","Trait Description":"After an ally Attacks, this creature deals damage to the target equal to 35% of its Speed. (Nether variant.)"},
-      {"Name":"Vampire Bat","Species":"Bat","Class":"Chaos","Health":29,"Attack":23,"Intelligence":13,"Defense":14,"Speed":28,"Tankiness":21.5,"Total":107,"R. Depth":12,"Source":"Great Pandemonium, Arachnid Nest, Damarel","Trait Name":"Vampirism","Item Name":"Vampire Bat Wings","Trait Description":"After an ally Attacks, your creatures recover Health equal to 25% of the damage dealt."},
-      {"Name":"Crypt Bat","Species":"Bat","Class":"Chaos","Health":28,"Attack":23,"Intelligence":13,"Defense":13,"Speed":28,"Tankiness":20.5,"Total":105,"R. Depth":22,"Source":"Great Pandemonium, Arachnid Nest, Damarel","Trait Name":"Bombardment","Item Name":"Crypt Bat Wings","Trait Description":"After an ally Attacks, this creature deals damage to the target equal to 35% of its Attack."},
-      {"Name":"Invidia Sin","Species":"Sin","Class":"Death","Health":33,"Attack":22,"Intelligence":30,"Defense":19,"Speed":15,"Tankiness":26,"Total":119,"R. Depth":28,"Source":"Path of the Damned","Trait Name":"Envy","Item Name":"Invidia's Mirror","Trait Description":"At the start of battle, this creature gains a random buff from each enemy."}
-    ];
+    let CREATURES = [];
+
+async function loadCreatures() {
+  const res = await fetch("./creatures.json", { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to load creatures.json");
+  CREATURES = await res.json();
+}
 
     const STORAGE_KEY = "siralim_team_planner_v1";
     const $ = (sel, root=document) => root.querySelector(sel);
@@ -1434,15 +1435,23 @@
       return { version:"v1", exportedAt:new Date().toISOString(), settings:{...state.settings}, team: state.team.map(s=>({...s})) };
     }
 
-    (function init(){
-      load();
-      $("#qName").value = state.filters.qName;
-      $("#qTrait").value = state.filters.qTrait;
-      $("#sortBy").value = state.filters.sortBy;
-      $("#btnSortDir").textContent = state.filters.sortDir === "desc" ? "↓ Desc" : "↑ Asc";
-      bindEvents();
-      renderAll();
-    })();
+    (async function init(){
+  try {
+    await loadCreatures();
+  } catch (e) {
+    console.error(e);
+    alert("Could not load creatures.json. Make sure it's in the repo root next to index.html.");
+  }
+
+  load();
+  $("#qName").value = state.filters.qName;
+  $("#qTrait").value = state.filters.qTrait;
+  $("#sortBy").value = state.filters.sortBy;
+  $("#btnSortDir").textContent = state.filters.sortDir === "desc" ? "↓ Desc" : "↑ Asc";
+
+  bindEvents();
+  renderAll();
+})();
   </script>
 </body>
 </html>
