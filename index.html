@@ -36,7 +36,7 @@
         radial-gradient(900px 600px at 35% 85%, rgba(59,130,246,0.12), transparent 55%),
         linear-gradient(180deg, #070a13, #0b1020);
       overflow:hidden;
-      color-scheme: dark; /* improves native control contrast on many browsers */
+      color-scheme: dark;
     }
     a{color:inherit}
     .app{
@@ -220,6 +220,21 @@
       overflow:auto;
     }
 
+    .banner{
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.25);
+      border-radius: 14px;
+      padding:10px 12px;
+      font-size:12px;
+      color: var(--muted);
+      line-height:1.35;
+      margin-bottom:12px;
+    }
+    .banner strong{color: rgba(255,255,255,0.9)}
+    .banner .ok{color: rgba(34,197,94,0.9)}
+    .banner .bad{color: rgba(239,68,68,0.92)}
+    .banner .mono{font-family: var(--mono);}
+
     /* Database controls */
     .controls{
       display:grid;
@@ -238,7 +253,6 @@
       color: var(--muted2);
     }
 
-    /* Stronger contrast on inputs/selects */
     input[type="text"], select, textarea{
       width:100%;
       padding:10px 10px;
@@ -257,8 +271,6 @@
       background: rgba(0,0,0,0.45);
     }
     select{cursor:pointer}
-
-    /* Improve option contrast (browser support varies) */
     select option{
       background:#0b1020;
       color:rgba(255,255,255,0.92);
@@ -306,12 +318,6 @@
       transform: translateY(-1px);
     }
     .card:active{transform: translateY(0px) scale(0.995)}
-    .row{
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      align-items:flex-start;
-    }
     .name{
       font-size:13px;
       margin:0;
@@ -344,9 +350,8 @@
       display:flex;
       gap:10px;
       flex-wrap:wrap;
-      justify-content:flex-start; /* FIX: no more weird right-justified wrapping */
+      justify-content:flex-start;
     }
-    .statline span{opacity:0.9}
     .muted{color: var(--muted2)}
     .small{font-size:12px; color: var(--muted)}
     .hr{
@@ -447,7 +452,7 @@
       color: var(--muted);
       margin:0;
       line-height:1.35;
-      word-break: break-word; /* helps long text */
+      word-break: break-word;
     }
     .link{
       font-size:11px;
@@ -483,9 +488,9 @@
       line-height:1.4;
     }
 
-    /* Drawer / overlay FIXES */
+    /* Drawer / overlay */
     .drawer{
-      position:fixed;                 /* FIX: detach from panel stacking context */
+      position:fixed;
       top:14px;
       right:14px;
       width: 420px;
@@ -498,12 +503,12 @@
       background: linear-gradient(180deg, rgba(15,20,40,0.98), rgba(10,14,28,0.98));
       backdrop-filter: blur(12px);
       box-shadow: -20px 0 60px rgba(0,0,0,0.50);
-      z-index:60;                     /* FIX: above overlay */
+      z-index:60;
       display:flex;
       flex-direction:column;
       min-height:0;
       overflow:hidden;
-      pointer-events:auto;            /* ensures clickable */
+      pointer-events:auto;
     }
     .drawer.open{transform: translateX(0)}
     .drawer header{
@@ -567,7 +572,7 @@
     .drawer p{margin:0; color: var(--muted); font-size:12px; line-height:1.45}
     .drawer .addrow{
       display:grid;
-      grid-template-columns: repeat(2, 1fr); /* FIX: more space */
+      grid-template-columns: repeat(2, 1fr);
       gap:10px;
       margin-top:12px;
     }
@@ -576,7 +581,7 @@
       position:fixed;
       inset:0;
       background: rgba(0,0,0,0.55);
-      z-index:50;               /* FIX: below drawer */
+      z-index:50;
       display:none;
     }
     .overlay.show{display:block}
@@ -637,9 +642,7 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    /* Make DB cards stack nicely on narrow cards */
     @media (max-width: 520px){
-      .row{flex-direction:column}
       .statline{justify-content:flex-start}
     }
     @media (max-width: 980px){
@@ -683,10 +686,14 @@
         <div class="panel-header">
           <div class="panel-title">
             <h2>Creature Database</h2>
-            <div class="hint">Search by name/species, filter by class/species, and sort by stats. Click a row for details + add to slots.</div>
+            <div class="hint">Search by name/species, filter by class/species, and sort by stats. Click a creature for details + add to slots.</div>
           </div>
         </div>
         <div class="panel-body">
+          <div class="banner" id="dataBanner">
+            Loading <span class="mono">creatures.json</span>…
+          </div>
+
           <div class="controls">
             <div class="field full">
               <label for="qName">Search (Name / Species)</label>
@@ -737,11 +744,6 @@
           </div>
 
           <div class="list" id="dbList" aria-label="Creature list"></div>
-
-          <div class="small muted" style="margin-top:12px; line-height:1.4">
-            <strong>Note about data:</strong> This HTML ships with a small sample dataset so the UI works immediately.
-            Replace the <span style="font-family:var(--mono)">CREATURES</span> constant below with your full JSON records to use the complete database.
-          </div>
         </div>
       </section>
 
@@ -765,7 +767,7 @@
 
   <div class="overlay" id="overlay"></div>
 
-  <!-- Detail Drawer (moved outside panels + fixed positioning) -->
+  <!-- Detail Drawer -->
   <div class="drawer" id="drawer" aria-hidden="true">
     <header>
       <div class="title">
@@ -809,17 +811,34 @@
 
   <script>
     /******************************************************************
-     * DATA
-     * Replace this constant with your full dataset (array of records).
+     * DATA LOADING
+     * Put creatures.json in the SAME folder as index.html (repo root).
+     * This app fetches it at runtime.
      ******************************************************************/
+
+    // Fallback sample data (only used if creatures.json can't be loaded)
+    const FALLBACK_CREATURES = [
+      {"Name":"Pulse Bat (Nether)","Species":"Bat","Class":"Chaos","Health":31,"Attack":26,"Intelligence":14,"Defense":16,"Speed":33,"Tankiness":23.5,"Total":120,"R. Depth":null,"Source":"Nether Creatures","Trait Name":"Nether Shockwave","Item Name":"Nether Pulse Bat Wings","Trait Description":"After an ally Attacks, this creature deals damage to the target equal to 35% of its Speed. (Nether variant.)"},
+      {"Name":"Vampire Bat","Species":"Bat","Class":"Chaos","Health":29,"Attack":23,"Intelligence":13,"Defense":14,"Speed":28,"Tankiness":21.5,"Total":107,"R. Depth":12,"Source":"Great Pandemonium, Arachnid Nest, Damarel","Trait Name":"Vampirism","Item Name":"Vampire Bat Wings","Trait Description":"After an ally Attacks, your creatures recover Health equal to 25% of the damage dealt."},
+      {"Name":"Crypt Bat","Species":"Bat","Class":"Chaos","Health":28,"Attack":23,"Intelligence":13,"Defense":13,"Speed":28,"Tankiness":20.5,"Total":105,"R. Depth":22,"Source":"Great Pandemonium, Arachnid Nest, Damarel","Trait Name":"Bombardment","Item Name":"Crypt Bat Wings","Trait Description":"After an ally Attacks, this creature deals damage to the target equal to 35% of its Attack."},
+      {"Name":"Invidia Sin","Species":"Sin","Class":"Death","Health":33,"Attack":22,"Intelligence":30,"Defense":19,"Speed":15,"Tankiness":26,"Total":119,"R. Depth":28,"Source":"Path of the Damned","Trait Name":"Envy","Item Name":"Invidia's Mirror","Trait Description":"At the start of battle, this creature gains a random buff from each enemy."}
+    ];
+
     let CREATURES = [];
 
-async function loadCreatures() {
-  const res = await fetch("./creatures.json", { cache: "no-store" });
-  if (!res.ok) throw new Error("Failed to load creatures.json");
-  CREATURES = await res.json();
-}
+    async function loadCreatures(){
+      // Cache-bust while you're iterating on GitHub Pages
+      const url = `./creatures.json?cache=${Date.now()}`;
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) throw new Error("Failed to load creatures.json");
+      const data = await res.json();
+      if (!Array.isArray(data)) throw new Error("creatures.json must be a JSON array (e.g., [ {...}, {...} ])");
+      CREATURES = data;
+    }
 
+    /******************************************************************
+     * STATE + HELPERS
+     ******************************************************************/
     const STORAGE_KEY = "siralim_team_planner_v1";
     const $ = (sel, root=document) => root.querySelector(sel);
     const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
@@ -832,6 +851,8 @@ async function loadCreatures() {
       toastEl.classList.add("show");
       toastTimer = setTimeout(()=> toastEl.classList.remove("show"), 1700);
     }
+
+    function setSaveStatus(msg){ $("#saveStatus").textContent = msg; }
 
     function clampNum(v){
       const n = Number(v);
@@ -859,17 +880,44 @@ async function loadCreatures() {
       };
     }
 
-   let DB = [];
-let byName = new Map();
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"']/g, c => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#39;"
+      }[c]));
+    }
 
-function rebuildIndexes(){
-  DB = CREATURES.map(normalizeCreature).filter(c => c.Name);
-  byName = new Map();
-  for (const c of DB){
-    if (!byName.has(c.Name)) byName.set(c.Name, c);
-  }
-}
+    function matchText(hay, needle){
+      if (!needle) return true;
+      if (!hay) return false;
+      return String(hay).toLowerCase().includes(String(needle).toLowerCase());
+    }
 
+    function uniqueSorted(arr){
+      return Array.from(new Set(arr.filter(Boolean))).sort((a,b)=> String(a).localeCompare(String(b)));
+    }
+
+    /******************************************************************
+     * DATABASE INDEXES (REBUIlT AFTER JSON LOAD)
+     ******************************************************************/
+    let DB = [];
+    let byName = new Map();
+
+    function rebuildIndexes(){
+      DB = CREATURES.map(normalizeCreature).filter(c => c.Name);
+      byName = new Map();
+      for (const c of DB){
+        if (!byName.has(c.Name)) byName.set(c.Name, c);
+      }
+      $("#countAll").textContent = String(DB.length);
+    }
+
+    /******************************************************************
+     * APP STATE
+     ******************************************************************/
     const state = {
       settings: { allowDuplicates: false },
       filters: {
@@ -892,8 +940,6 @@ function rebuildIndexes(){
         traitExpanded: false
       }))
     };
-
-    function setSaveStatus(msg){ $("#saveStatus").textContent = msg; }
 
     function save(){
       const payload = {
@@ -977,8 +1023,17 @@ function rebuildIndexes(){
       toast("Cleared");
     }
 
-    function uniqueSorted(arr){
-      return Array.from(new Set(arr.filter(Boolean))).sort((a,b)=> String(a).localeCompare(String(b)));
+    /******************************************************************
+     * RENDERING
+     ******************************************************************/
+    function renderBanner(ok, msg){
+      const b = $("#dataBanner");
+      if (ok){
+        b.innerHTML = `<strong class="ok">Loaded</strong> <span class="mono">creatures.json</span> — ${escapeHtml(msg)}`;
+      } else {
+        b.innerHTML = `<strong class="bad">Couldn’t load</strong> <span class="mono">creatures.json</span> — ${escapeHtml(msg)}<br/>
+        Using a small fallback sample so the UI still works.`;
+      }
     }
 
     function renderFilters(){
@@ -996,25 +1051,8 @@ function rebuildIndexes(){
       classSel.value = currentClass;
       speciesSel.value = currentSpecies;
 
-      $("#countAll").textContent = String(DB.length);
       $("#toggleDuplicates").dataset.on = String(state.settings.allowDuplicates);
       $("#toggleDuplicates").setAttribute("aria-checked", String(state.settings.allowDuplicates));
-    }
-
-    function escapeHtml(s){
-      return String(s).replace(/[&<>"']/g, c => ({
-        "&":"&amp;",
-        "<":"&lt;",
-        ">":"&gt;",
-        '"':"&quot;",
-        "'":"&#39;"
-      }[c]));
-    }
-
-    function matchText(hay, needle){
-      if (!needle) return true;
-      if (!hay) return false;
-      return String(hay).toLowerCase().includes(String(needle).toLowerCase());
     }
 
     function filteredCreatures(){
@@ -1056,9 +1094,10 @@ function rebuildIndexes(){
         el.setAttribute("aria-label", `Open details for ${c.Name}`);
         el.dataset.name = c.Name;
 
-        const traitPreview = c["Trait Description"] ? c["Trait Description"].slice(0, 140) + (c["Trait Description"].length > 140 ? "…" : "") : "—";
+        const traitPreview = c["Trait Description"]
+          ? c["Trait Description"].slice(0, 140) + (c["Trait Description"].length > 140 ? "…" : "")
+          : "—";
 
-        /* FIX: stats now live under tags, not cramped into a right-hand column */
         el.innerHTML = `
           <div>
             <p class="name"><strong>${escapeHtml(c.Name)}</strong></p>
@@ -1313,7 +1352,7 @@ function rebuildIndexes(){
       root.appendChild(frag);
 
       $$("[data-clear]").forEach(btn => btn.addEventListener("click", () => removeCreatureFromSlot(Number(btn.dataset.clear))));
-      $$("[data-open]").forEach(btn => btn.addEventListener("click", () => openDetails(btn.dataset.open))));
+      $$("[data-open]").forEach(btn => btn.addEventListener("click", () => openDetails(btn.dataset.open)));
       $$("[data-toggletrait]").forEach(btn => {
         btn.addEventListener("click", () => {
           const idx = Number(btn.dataset.toggletrait);
@@ -1344,6 +1383,9 @@ function rebuildIndexes(){
       if (state.selected) renderDrawer();
     }
 
+    /******************************************************************
+     * EVENTS
+     ******************************************************************/
     function bindEvents(){
       $("#qName").addEventListener("input", (e) => { state.filters.qName = e.target.value || ""; renderDb(); });
       $("#qTrait").addEventListener("input", (e) => { state.filters.qTrait = e.target.value || ""; renderDb(); });
@@ -1369,9 +1411,10 @@ function rebuildIndexes(){
       dupToggle.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); flipDup(); } });
 
       $("#drawerClose").addEventListener("click", closeDetails);
-
-      // IMPORTANT: overlay closes the drawer; clicks inside drawer should NOT.
-      $("#overlay").addEventListener("click", closeDetails);
+      $("#overlay").addEventListener("click", () => {
+        if ($("#importModal").classList.contains("show")) closeImport();
+        else closeDetails();
+      });
       $("#drawer").addEventListener("click", (e) => e.stopPropagation());
 
       window.addEventListener("keydown", (e) => {
@@ -1435,28 +1478,39 @@ function rebuildIndexes(){
       $("#overlay").classList.remove("show");
     }
 
-    function exportPayload(){
-      return { version:"v1", exportedAt:new Date().toISOString(), settings:{...state.settings}, team: state.team.map(s=>({...s})) };
-    }
-
+    /******************************************************************
+     * INIT
+     ******************************************************************/
     (async function init(){
-  try {
-    await loadCreatures();
-    rebuildIndexes();
-  } catch (e) {
-    console.error(e);
-    alert("Could not load creatures.json. Make sure it's in the repo root next to index.html.");
-  }
+      // load creatures.json, else fallback to sample
+      try {
+        await loadCreatures();
+        renderBanner(true, `${CREATURES.length.toLocaleString()} creatures`);
+      } catch (e) {
+        console.error(e);
+        CREATURES = FALLBACK_CREATURES;
+        renderBanner(false, "Check that creatures.json is valid JSON and lives next to index.html.");
+      }
 
-  load();
-  $("#qName").value = state.filters.qName;
-  $("#qTrait").value = state.filters.qTrait;
-  $("#sortBy").value = state.filters.sortBy;
-  $("#btnSortDir").textContent = state.filters.sortDir === "desc" ? "↓ Desc" : "↑ Asc";
+      // build DB and indexes AFTER load
+      rebuildIndexes();
 
-  bindEvents();
-  renderAll();
-})();
+      // load saved team
+      load();
+
+      // set UI inputs from state
+      $("#qName").value = state.filters.qName;
+      $("#qTrait").value = state.filters.qTrait;
+      $("#sortBy").value = state.filters.sortBy;
+      $("#btnSortDir").textContent = state.filters.sortDir === "desc" ? "↓ Desc" : "↑ Asc";
+
+      // bind + render
+      bindEvents();
+      renderAll();
+
+      // Sanity log
+      console.log("DB ready:", DB.length, "creatures");
+    })();
   </script>
 </body>
 </html>
