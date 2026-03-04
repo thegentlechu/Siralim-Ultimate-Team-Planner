@@ -8,7 +8,6 @@
     :root{
       --bg: #0b1020;
       --panel: rgba(255,255,255,0.06);
-      --panel2: rgba(255,255,255,0.08);
       --text: rgba(255,255,255,0.92);
       --muted: rgba(255,255,255,0.72);
       --muted2: rgba(255,255,255,0.55);
@@ -18,9 +17,7 @@
       --accent: #7c5cff;
       --accent2:#22c55e;
       --danger:#ef4444;
-      --warn:#f59e0b;
       --radius: 18px;
-      --radius2: 12px;
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
       --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
@@ -69,12 +66,7 @@
     .brand h1{margin:0;font-size:16px;letter-spacing:0.2px;line-height:1.1}
     .brand .sub{margin-top:2px;font-size:12px;color:var(--muted)}
     .actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
-    .pill{
-      display:flex;align-items:center;gap:8px;
-      padding:10px 12px;border:1px solid var(--border);
-      background: rgba(255,255,255,0.05);
-      border-radius:999px;color:var(--muted);font-size:12px;
-    }
+
     .toggle{
       display:flex;align-items:center;gap:10px;
       padding:10px 12px;border-radius:999px;border:1px solid var(--border);
@@ -113,6 +105,13 @@
     .btn.primary:hover{background: linear-gradient(135deg, rgba(124,92,255,1.0), rgba(124,92,255,0.65))}
     .btn.danger{background: rgba(239,68,68,0.10);border-color: rgba(239,68,68,0.30)}
 
+    .pill{
+      display:flex;align-items:center;gap:8px;
+      padding:10px 12px;border:1px solid var(--border);
+      background: rgba(255,255,255,0.05);
+      border-radius:999px;color:var(--muted);font-size:12px;
+    }
+
     .content{
       height:100%;min-height:0;
       display:grid;grid-template-columns: 420px minmax(420px, 1fr);
@@ -148,9 +147,8 @@
       line-height:1.35;
       margin-bottom:12px;
     }
-    .banner strong{color: rgba(255,255,255,0.9)}
-    .banner .ok{color: rgba(34,197,94,0.9)}
-    .banner .bad{color: rgba(239,68,68,0.92)}
+    .banner .ok{color: rgba(34,197,94,0.9);font-weight:700}
+    .banner .bad{color: rgba(239,68,68,0.92);font-weight:700}
     .banner .mono{font-family: var(--mono);}
 
     .controls{display:grid;grid-template-columns: 1fr 1fr;gap:10px;margin-bottom:12px}
@@ -184,6 +182,7 @@
       background: rgba(255,255,255,0.04);
       border-radius: 14px;color: var(--muted);font-size:12px;
     }
+
     .list{display:flex;flex-direction:column;gap:8px;padding-bottom: 80px}
     .card{
       padding:10px 12px;border-radius: 16px;border:1px solid rgba(255,255,255,0.10);
@@ -199,6 +198,7 @@
       background: rgba(0,0,0,0.16);color: var(--muted);white-space:nowrap;
     }
     .tag.accent{border-color: rgba(124,92,255,0.35); color: rgba(255,255,255,0.85); background: rgba(124,92,255,0.10)}
+    .tag.good{border-color: rgba(34,197,94,0.35); color: rgba(255,255,255,0.85); background: rgba(34,197,94,0.10)}
     .statline{
       font-family: var(--mono);font-size:11px;color: rgba(255,255,255,0.78);
       margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-start;
@@ -207,11 +207,12 @@
     .small{font-size:12px; color: var(--muted)}
     .hr{height:1px;background: rgba(255,255,255,0.10);margin: 10px 0}
 
+    /* Party */
     .builder-grid{display:grid;grid-template-columns: repeat(2, minmax(0, 1fr));gap:12px;align-items:stretch}
     .slot{
       border:1px solid rgba(255,255,255,0.10);
       background: rgba(255,255,255,0.04);
-      border-radius: 18px;padding:12px;display:flex;flex-direction:column;gap:10px;min-height: 220px;
+      border-radius: 18px;padding:12px;display:flex;flex-direction:column;gap:10px;min-height: 240px;
     }
     .slot .slot-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
     .slot-title{display:flex;flex-direction:column;gap:6px;min-width:0}
@@ -231,7 +232,27 @@
     .iconbtn:active{transform: scale(0.98)}
     .iconbtn.danger{border-color: rgba(239,68,68,0.35); background: rgba(239,68,68,0.12)}
     .slot .slot-sub{display:flex;gap:6px;flex-wrap:wrap;color: var(--muted);font-size:12px}
-    .trait{border:1px solid rgba(255,255,255,0.10);background: rgba(0,0,0,0.20);border-radius: 14px;padding:10px}
+
+    .fusion-pill{
+      font-size:11px;
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.16);
+      color: rgba(255,255,255,0.82);
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      white-space:nowrap;
+    }
+    .fusion-pill b{font-family:var(--mono);font-weight:700}
+
+    .trait{
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.20);
+      border-radius: 14px;
+      padding:10px;
+    }
     .trait .tname{
       font-size:12px;color: rgba(255,255,255,0.88);
       margin:0 0 6px 0;display:flex;align-items:center;justify-content:space-between;gap:10px;
@@ -257,8 +278,9 @@
       line-height:1.4;
     }
 
+    /* Drawer */
     .drawer{
-      position:fixed;top:14px;right:14px;width: 420px;max-width: calc(100vw - 28px);
+      position:fixed;top:14px;right:14px;width: 440px;max-width: calc(100vw - 28px);
       height: calc(100vh - 28px);
       transform: translateX(105%);transition: transform .22s ease;
       border:1px solid rgba(255,255,255,0.14);border-radius: 20px;
@@ -285,6 +307,7 @@
     .drawer p{margin:0;color: var(--muted);font-size:12px;line-height:1.45}
     .drawer .addrow{display:grid;grid-template-columns: repeat(2, 1fr);gap:10px;margin-top:12px}
 
+    /* Overlay + Modal */
     .overlay{position:fixed;inset:0;background: rgba(0,0,0,0.55);z-index:50;display:none}
     .overlay.show{display:block}
 
@@ -331,26 +354,27 @@
         <div class="logo" aria-hidden="true"></div>
         <div>
           <h1>Siralim Ultimate Team Planner</h1>
-          <div class="sub">Build a 6-creature team • assign roles/artifacts/spells • export/import • autosaves locally</div>
+          <div class="sub">Build a 6-creature team • fuse (Parent1/Parent2) • export/import • autosaves locally</div>
         </div>
       </div>
       <div class="actions">
-        <div class="toggle" id="toggleDuplicates" data-on="false" role="switch" aria-checked="false" tabindex="0">
+        <div class="toggle" id="toggleDuplicates" data-on="false" role="switch" aria-checked="false" tabindex="0" title="Allow using the same creature multiple times across any parent slot">
           <div class="dot" aria-hidden="true"></div>
           <div class="label">Allow duplicates</div>
         </div>
-        <button class="btn" id="btnExport">⤓ Export Team</button>
-        <button class="btn" id="btnImport">⤒ Import Team</button>
-        <button class="btn danger" id="btnClear">✕ Clear Team</button>
+        <button class="btn" id="btnExport" title="Download a JSON file you can share">⤓ Export Team</button>
+        <button class="btn" id="btnImport" title="Paste JSON or import a file to restore a team">⤒ Import Team</button>
+        <button class="btn danger" id="btnClear" title="Clear all slots">✕ Clear Team</button>
       </div>
     </div>
 
     <div class="content">
+      <!-- Database -->
       <section class="panel" id="dbPanel">
         <div class="panel-header">
           <div class="panel-title">
             <h2>Creature Database</h2>
-            <div class="hint">Search/filter/sort creatures. Click one for details and add it to a slot.</div>
+            <div class="hint">Search/filter/sort creatures. Click one for details, then assign it as <b>Parent 1</b> or <b>Parent 2</b> for any slot.</div>
           </div>
         </div>
         <div class="panel-body">
@@ -390,10 +414,9 @@
                     <option value="Intelligence">Intelligence</option>
                     <option value="Defense">Defense</option>
                     <option value="Speed">Speed</option>
-                    <option value="Tankiness">Tankiness</option>
                   </select>
                 </div>
-                <button class="btn" id="btnSortDir">↓ Desc</button>
+                <button class="btn" id="btnSortDir" title="Toggle ascending/descending">↓ Desc</button>
               </div>
             </div>
           </div>
@@ -407,13 +430,14 @@
         </div>
       </section>
 
+      <!-- Party -->
       <section class="panel">
         <div class="panel-header">
           <div class="panel-title">
             <h2>Party Builder</h2>
-            <div class="hint">Six slots with role/artifact/spells/notes. Autosaves to localStorage.</div>
+            <div class="hint">Each slot has two parents. Fusion result: stats averaged; species from Parent 1; class from Parent 2; traits from both.</div>
           </div>
-          <div class="pill">💾 Autosave: <span id="saveStatus">Ready</span></div>
+          <div class="pill" title="Saved locally in your browser">💾 Autosave: <span id="saveStatus">Ready</span></div>
         </div>
         <div class="panel-body">
           <div class="builder-grid" id="slots"></div>
@@ -424,6 +448,7 @@
 
   <div class="overlay" id="overlay"></div>
 
+  <!-- Detail Drawer -->
   <div class="drawer" id="drawer" aria-hidden="true">
     <header>
       <div class="title">
@@ -435,6 +460,7 @@
     <div class="body" id="dBody"></div>
   </div>
 
+  <!-- Import Modal -->
   <div class="modal" id="importModal" role="dialog" aria-modal="true">
     <div class="box">
       <header>
@@ -476,15 +502,13 @@
       if (!res.ok) throw new Error(`Failed to load creatures.json (${res.status})`);
       const data = await res.json();
       if (Array.isArray(data)) return data;
-
-      // If your JSON is wrapped in an object (not your case, but safe)
       return data.creatures || data.CREATURES || data.data || [];
     }
 
     /******************************************************************
      * HELPERS
      ******************************************************************/
-    const STORAGE_KEY = "siralim_team_planner_v1";
+    const STORAGE_KEY = "siralim_team_planner_v2_fusion_no_tankiness";
     const $ = (sel, root=document) => root.querySelector(sel);
     const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
 
@@ -510,7 +534,6 @@
       return Number.isFinite(n) ? n : 0;
     }
 
-    // Key getter that supports multiple naming conventions
     function pick(obj, keys){
       for (const k of keys){
         if (obj && Object.prototype.hasOwnProperty.call(obj, k) && obj[k] !== undefined && obj[k] !== null) return obj[k];
@@ -520,28 +543,44 @@
 
     function toStr(v){ return (v === undefined || v === null) ? "" : String(v); }
 
+    function matchText(hay, needle){
+      if (!needle) return true;
+      if (!hay) return false;
+      return String(hay).toLowerCase().includes(String(needle).toLowerCase());
+    }
+
+    function uniqueSorted(arr){
+      return Array.from(new Set(arr.filter(Boolean))).sort((a,b)=> String(a).localeCompare(String(b)));
+    }
+
+    function avg(a, b){
+      const na = Number(a), nb = Number(b);
+      const aOk = Number.isFinite(na), bOk = Number.isFinite(nb);
+      if (aOk && bOk) return (na + nb) / 2;
+      if (aOk) return na;
+      if (bOk) return nb;
+      return 0;
+    }
+
     /******************************************************************
      * NORMALIZATION (supports lowercase keys from your JSON)
+     * NOTE: Tankiness removed entirely.
      ******************************************************************/
     function normalizeCreature(r){
       const name = toStr(pick(r, ["Name","name"])).trim();
       const species = toStr(pick(r, ["Species","species"])).trim();
       const cls = toStr(pick(r, ["Class","class"])).trim();
 
-      // Stats: support Title Case + lowercase + common variants
       const health = pick(r, ["Health","health","hp","HP"]);
       const attack = pick(r, ["Attack","attack","atk","ATK"]);
       const intelligence = pick(r, ["Intelligence","intelligence","int","INT"]);
       const defense = pick(r, ["Defense","defense","def","DEF"]);
       const speed = pick(r, ["Speed","speed","spd","SPD"]);
-      const tankiness = pick(r, ["Tankiness","tankiness"]);
       const total = pick(r, ["Total","total"]);
 
-      // Depth/source: support variants
       const depth = pick(r, ["R. Depth","Realm Depth","realmDepth","realm_depth"]);
       const source = pick(r, ["Source","source"]);
 
-      // Trait fields: support variants
       const traitName = toStr(pick(r, ["Trait Name","trait_name","traitName","TraitName","trait"])).trim();
       const itemName = toStr(pick(r, ["Item Name","item_name","itemName","ItemName"])).trim();
       const traitDesc = toStr(pick(r, ["Trait Description","trait_description","traitDescription","TraitDescription","description"])).trim();
@@ -555,7 +594,6 @@
         Intelligence: clampNum(intelligence),
         Defense: clampNum(defense),
         Speed: clampNum(speed),
-        Tankiness: Number.isFinite(Number(tankiness)) ? Number(tankiness) : clampNum(tankiness),
         Total: clampNum(total),
         "R. Depth": (depth === "" || depth === undefined || depth === null) ? null : clampNum(depth),
         Source: source ?? null,
@@ -563,16 +601,6 @@
         "Item Name": itemName,
         "Trait Description": traitDesc
       };
-    }
-
-    function matchText(hay, needle){
-      if (!needle) return true;
-      if (!hay) return false;
-      return String(hay).toLowerCase().includes(String(needle).toLowerCase());
-    }
-
-    function uniqueSorted(arr){
-      return Array.from(new Set(arr.filter(Boolean))).sort((a,b)=> String(a).localeCompare(String(b)));
     }
 
     /******************************************************************
@@ -591,20 +619,97 @@
     }
 
     /******************************************************************
-     * APP STATE
+     * FUSION (per-slot derived creature)
+     * - Stats are averaged across parents
+     * - Species from Parent 1
+     * - Class from Parent 2
+     * - Traits from both
+     * - Name displayed as "Parent1/Parent2"
+     ******************************************************************/
+    function computeFusion(slot){
+      const p1 = slot.parent1Name ? byName.get(slot.parent1Name) : null;
+      const p2 = slot.parent2Name ? byName.get(slot.parent2Name) : null;
+
+      if (!p1 && !p2) return null;
+
+      // partial selection -> show whichever exists (no fusion yet)
+      if (p1 && !p2){
+        return {
+          mode: "single",
+          displayName: p1.Name,
+          Species: p1.Species,
+          Class: p1.Class,
+          stats: {
+            Health: p1.Health, Attack: p1.Attack, Intelligence: p1.Intelligence,
+            Defense: p1.Defense, Speed: p1.Speed, Total: p1.Total
+          },
+          traits: [{name: p1["Trait Name"], desc: p1["Trait Description"], parent: 1}]
+        };
+      }
+      if (!p1 && p2){
+        return {
+          mode: "single",
+          displayName: p2.Name,
+          Species: p2.Species,
+          Class: p2.Class,
+          stats: {
+            Health: p2.Health, Attack: p2.Attack, Intelligence: p2.Intelligence,
+            Defense: p2.Defense, Speed: p2.Speed, Total: p2.Total
+          },
+          traits: [{name: p2["Trait Name"], desc: p2["Trait Description"], parent: 2}]
+        };
+      }
+
+      // full fusion
+      const stats = {
+        Health: avg(p1.Health, p2.Health),
+        Attack: avg(p1.Attack, p2.Attack),
+        Intelligence: avg(p1.Intelligence, p2.Intelligence),
+        Defense: avg(p1.Defense, p2.Defense),
+        Speed: avg(p1.Speed, p2.Speed),
+        Total: avg(p1.Total, p2.Total)
+      };
+
+      return {
+        mode: "fusion",
+        displayName: `${p1.Name}/${p2.Name}`,
+        Species: p1.Species,
+        Class: p2.Class,
+        stats,
+        traits: [
+          {name: p1["Trait Name"], desc: p1["Trait Description"], parent: 1},
+          {name: p2["Trait Name"], desc: p2["Trait Description"], parent: 2}
+        ]
+      };
+    }
+
+    /******************************************************************
+     * APP STATE (stores two parents per slot)
      ******************************************************************/
     const state = {
       settings: { allowDuplicates: false },
       filters: { qName:"", qTrait:"", class:"", species:"", sortBy:"Total", sortDir:"desc" },
       selected: null,
       team: Array.from({length:6}, () => ({
-        creatureName: null,
-        role: "", artifact: "", spell1: "", spell2: "", spell3: "", notes: "", traitExpanded: false
+        parent1Name: null,
+        parent2Name: null,
+        role: "",
+        artifact: "",
+        spell1: "",
+        spell2: "",
+        spell3: "",
+        notes: "",
+        traitExpanded: false
       }))
     };
 
     function save(){
-      const payload = { version:"v1", savedAt:new Date().toISOString(), settings:{...state.settings}, team: state.team.map(s=>({...s})) };
+      const payload = {
+        version: "v2-fusion",
+        savedAt: new Date().toISOString(),
+        settings: {...state.settings},
+        team: state.team.map(s => ({...s}))
+      };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
       setSaveStatus("Saved");
       setTimeout(()=> setSaveStatus("Ready"), 650);
@@ -615,33 +720,58 @@
       if (!raw) return;
       try{
         const payload = JSON.parse(raw);
-        if (!payload || payload.version !== "v1") return;
+        if (!payload) return;
         if (payload.settings) state.settings.allowDuplicates = !!payload.settings.allowDuplicates;
         if (Array.isArray(payload.team) && payload.team.length === 6){
           state.team = payload.team.map(s => ({
-            creatureName: s.creatureName ?? null,
-            role: s.role ?? "", artifact: s.artifact ?? "",
-            spell1: s.spell1 ?? "", spell2: s.spell2 ?? "", spell3: s.spell3 ?? "",
-            notes: s.notes ?? "", traitExpanded: !!s.traitExpanded
+            parent1Name: s.parent1Name ?? null,
+            parent2Name: s.parent2Name ?? null,
+            role: s.role ?? "",
+            artifact: s.artifact ?? "",
+            spell1: s.spell1 ?? "",
+            spell2: s.spell2 ?? "",
+            spell3: s.spell3 ?? "",
+            notes: s.notes ?? "",
+            traitExpanded: !!s.traitExpanded
           }));
         }
-      }catch(e){ console.warn("Failed to load saved state", e); }
+      }catch(e){
+        console.warn("Failed to load saved state", e);
+      }
     }
 
     function exportPayload(){
-      return { version:"v1", exportedAt:new Date().toISOString(), settings:{...state.settings}, team: state.team.map(s=>({...s})) };
+      return {
+        version: "v2-fusion",
+        exportedAt: new Date().toISOString(),
+        settings: {...state.settings},
+        team: state.team.map(s => ({...s}))
+      };
     }
 
     function applyImport(payload){
-      if (!payload || payload.version !== "v1") throw new Error("Unsupported JSON (expected version v1).");
-      if (!Array.isArray(payload.team) || payload.team.length !== 6) throw new Error("Invalid team (expected 6 slots).");
+      if (!payload || (payload.version !== "v2-fusion" && payload.version !== "v1")) {
+        throw new Error("Unsupported JSON. Expected version v2-fusion.");
+      }
+      if (!payload.team || !Array.isArray(payload.team) || payload.team.length !== 6) {
+        throw new Error("Invalid team (expected 6 slots).");
+      }
       state.settings.allowDuplicates = !!(payload.settings && payload.settings.allowDuplicates);
+
       state.team = payload.team.map(s => ({
-        creatureName: s.creatureName ?? null,
-        role: s.role ?? "", artifact: s.artifact ?? "",
-        spell1: s.spell1 ?? "", spell2: s.spell2 ?? "", spell3: s.spell3 ?? "",
-        notes: s.notes ?? "", traitExpanded: !!s.traitExpanded
+        parent1Name: s.parent1Name ?? null,
+        parent2Name: s.parent2Name ?? null,
+        // If someone imports old v1 (single creature), attempt to map it:
+        ...(s.creatureName ? { parent1Name: s.creatureName } : {}),
+        role: s.role ?? "",
+        artifact: s.artifact ?? "",
+        spell1: s.spell1 ?? "",
+        spell2: s.spell2 ?? "",
+        spell3: s.spell3 ?? "",
+        notes: s.notes ?? "",
+        traitExpanded: !!s.traitExpanded
       }));
+
       save();
       renderAll();
       toast("Team imported");
@@ -649,8 +779,15 @@
 
     function clearTeam(){
       state.team = Array.from({length:6}, () => ({
-        creatureName: null,
-        role:"", artifact:"", spell1:"", spell2:"", spell3:"", notes:"", traitExpanded:false
+        parent1Name: null,
+        parent2Name: null,
+        role: "",
+        artifact: "",
+        spell1: "",
+        spell2: "",
+        spell3: "",
+        notes: "",
+        traitExpanded: false
       }));
       save();
       renderSlots();
@@ -658,19 +795,59 @@
     }
 
     /******************************************************************
-     * UI banner
+     * DUPLICATE PROTECTION (checks both parents in other slots)
+     ******************************************************************/
+    function isDuplicateCandidate(name, slotIndex){
+      for (let i=0; i<state.team.length; i++){
+        if (i === slotIndex) continue;
+        const s = state.team[i];
+        if (s.parent1Name === name || s.parent2Name === name) return true;
+      }
+      return false;
+    }
+
+    function setParent(slotIndex, which, name){
+      if (!byName.has(name)){
+        toast("Creature not found");
+        return;
+      }
+      if (!state.settings.allowDuplicates && isDuplicateCandidate(name, slotIndex)){
+        toast("Duplicate blocked (toggle Allow duplicates)");
+        return;
+      }
+
+      if (which === 1) state.team[slotIndex].parent1Name = name;
+      if (which === 2) state.team[slotIndex].parent2Name = name;
+
+      state.team[slotIndex].traitExpanded = false;
+      save();
+      renderSlots();
+      toast(`Set Parent ${which} for Slot ${slotIndex+1}`);
+    }
+
+    function clearSlot(slotIndex){
+      state.team[slotIndex].parent1Name = null;
+      state.team[slotIndex].parent2Name = null;
+      state.team[slotIndex].traitExpanded = false;
+      save();
+      renderSlots();
+      toast(`Slot ${slotIndex+1} cleared`);
+    }
+
+    /******************************************************************
+     * BANNER
      ******************************************************************/
     function renderBanner(ok, msg){
       const b = $("#dataBanner");
       if (ok){
-        b.innerHTML = `<strong class="ok">Loaded</strong> <span class="mono">creatures.json</span> — ${escapeHtml(msg)}`;
+        b.innerHTML = `<span class="ok">Loaded</span> <span class="mono">creatures.json</span> — ${escapeHtml(msg)}`;
       } else {
-        b.innerHTML = `<strong class="bad">Couldn’t load</strong> <span class="mono">creatures.json</span> — ${escapeHtml(msg)}`;
+        b.innerHTML = `<span class="bad">Couldn’t load</span> <span class="mono">creatures.json</span> — ${escapeHtml(msg)}`;
       }
     }
 
     /******************************************************************
-     * RENDERING
+     * DATABASE RENDER
      ******************************************************************/
     function renderFilters(){
       const classes = uniqueSorted(DB.map(c => c.Class));
@@ -728,7 +905,6 @@
         el.tabIndex = 0;
         el.setAttribute("role","button");
         el.setAttribute("aria-label", `Open details for ${c.Name}`);
-        el.dataset.name = c.Name;
 
         const traitPreview = c["Trait Description"]
           ? c["Trait Description"].slice(0, 140) + (c["Trait Description"].length > 140 ? "…" : "")
@@ -766,6 +942,9 @@
       dbList.appendChild(frag);
     }
 
+    /******************************************************************
+     * DRAWER
+     ******************************************************************/
     function openDetails(name){
       state.selected = name;
       renderDrawer();
@@ -773,6 +952,7 @@
       $("#drawer").setAttribute("aria-hidden","false");
       $("#overlay").classList.add("show");
     }
+
     function closeDetails(){
       $("#drawer").classList.remove("open");
       $("#drawer").setAttribute("aria-hidden","true");
@@ -807,13 +987,15 @@
 
       const slotBtns = Array.from({length:6}, (_,i) => {
         const slotNum = i+1;
-        return `<button class="btn primary" data-addslot="${i}">＋ Slot ${slotNum}</button>`;
+        return `
+          <button class="btn primary" data-setp1="${i}" title="Set as Parent 1 for Slot ${slotNum}">P1 → Slot ${slotNum}</button>
+          <button class="btn" data-setp2="${i}" title="Set as Parent 2 for Slot ${slotNum}">P2 → Slot ${slotNum}</button>
+        `;
       }).join("");
 
       $("#dBody").innerHTML = `
         <div class="grid2">
           ${kpi("Total", c.Total)}
-          ${kpi("Tankiness", c.Tankiness)}
           ${kpi("Health", c.Health)}
           ${kpi("Attack", c.Attack)}
           ${kpi("Intelligence", c.Intelligence)}
@@ -843,92 +1025,120 @@
         <div class="section">
           <h4>Add to Party</h4>
           <div class="addrow">${slotBtns}</div>
-          <div class="small muted" style="margin-top:10px;">
+          <div class="small muted" style="margin-top:10px; line-height:1.45;">
             Duplicate protection: <strong>${state.settings.allowDuplicates ? "OFF" : "ON"}</strong>
           </div>
         </div>
       `;
 
-      $$("[data-addslot]", $("#dBody")).forEach(btn => {
-        btn.addEventListener("click", () => {
-          assignCreatureToSlot(c.Name, Number(btn.dataset.addslot));
-        });
+      $$("[data-setp1]", $("#dBody")).forEach(btn => {
+        btn.addEventListener("click", () => setParent(Number(btn.dataset.setp1), 1, c.Name));
+      });
+      $$("[data-setp2]", $("#dBody")).forEach(btn => {
+        btn.addEventListener("click", () => setParent(Number(btn.dataset.setp2), 2, c.Name));
       });
     }
 
-    function assignCreatureToSlot(name, slotIndex){
-      if (!byName.has(name)){ toast("Creature not found"); return; }
-      if (!state.settings.allowDuplicates){
-        const exists = state.team.some((s, i) => i !== slotIndex && s.creatureName === name);
-        if (exists){ toast("Duplicate blocked (toggle Allow duplicates)"); return; }
-      }
-      state.team[slotIndex].creatureName = name;
-      state.team[slotIndex].traitExpanded = false;
-      save();
-      renderSlots();
-      toast(`Assigned to Slot ${slotIndex+1}`);
-    }
-
-    function removeCreatureFromSlot(slotIndex){
-      state.team[slotIndex].creatureName = null;
-      state.team[slotIndex].traitExpanded = false;
-      save();
-      renderSlots();
-      toast(`Slot ${slotIndex+1} cleared`);
-    }
-
+    /******************************************************************
+     * PARTY RENDER
+     ******************************************************************/
     function renderSlots(){
       const root = $("#slots");
       root.innerHTML = "";
       const frag = document.createDocumentFragment();
 
       state.team.forEach((slot, i) => {
-        const c = slot.creatureName ? byName.get(slot.creatureName) : null;
-
-        const traitName = c ? (c["Trait Name"] || "—") : "";
-        const traitDesc = c ? (c["Trait Description"] || "") : "";
-        const expanded = !!slot.traitExpanded;
-
-        const traitShort = traitDesc.length > 140 ? traitDesc.slice(0, 140) + "…" : traitDesc;
-        const showText = expanded ? traitDesc : traitShort;
-        const hasMore = traitDesc.length > 140;
+        const fusion = computeFusion(slot);
+        const p1 = slot.parent1Name ? byName.get(slot.parent1Name) : null;
+        const p2 = slot.parent2Name ? byName.get(slot.parent2Name) : null;
 
         const el = document.createElement("div");
         el.className = "slot";
+
+        const headerName = fusion ? fusion.displayName : "— Empty —";
+        const classTag = fusion ? fusion.Class : "";
+        const speciesTag = fusion ? fusion.Species : "";
+
+        const fusionChip = (p1 || p2) ? `
+          <span class="fusion-pill" title="Fusion order: Species from Parent 1; Class from Parent 2">
+            P1: <b>${escapeHtml(p1 ? p1.Name : "—")}</b> •
+            P2: <b>${escapeHtml(p2 ? p2.Name : "—")}</b>
+          </span>
+        ` : "";
+
+        const statsLine = fusion ? `
+          <div class="statline" title="${fusion.mode === "fusion" ? "Fusion stats are averaged" : "Base stats"}">
+            <span>Total: ${escapeHtml(fusion.stats.Total)}</span>
+            <span>HP: ${escapeHtml(fusion.stats.Health)}</span>
+            <span>ATK: ${escapeHtml(fusion.stats.Attack)}</span>
+            <span>INT: ${escapeHtml(fusion.stats.Intelligence)}</span>
+            <span>DEF: ${escapeHtml(fusion.stats.Defense)}</span>
+            <span>SPD: ${escapeHtml(fusion.stats.Speed)}</span>
+          </div>
+        ` : "";
+
+        // Traits: show both when fused
+        let traitHtml = "";
+        if (fusion){
+          const expanded = !!slot.traitExpanded;
+
+          const joined = fusion.traits
+            .map(t => ({
+              ...t,
+              name: t.name || "—",
+              desc: t.desc || "—"
+            }));
+
+          // Collapse/expand controls (expands ALL trait text at once)
+          const allText = joined.map(t => `Parent ${t.parent}: ${t.name}\n${t.desc}`).join("\n\n");
+          const short = allText.length > 320 ? allText.slice(0, 320) + "…" : allText;
+
+          const displayText = expanded ? allText : short;
+          const hasMore = allText.length > 320;
+
+          traitHtml = `
+            <div class="trait">
+              <p class="tname">
+                <span><strong>Traits</strong> <span class="muted small">(${fusion.mode === "fusion" ? "P1 + P2" : "single"})</span></span>
+                ${hasMore ? `<span class="link" data-toggletrait="${i}">${expanded ? "Collapse" : "Expand"}</span>` : `<span class="muted small">Preview</span>`}
+              </p>
+              <p class="ttext">${escapeHtml(displayText).replace(/\n/g,"<br/>")}</p>
+            </div>
+          `;
+        }
 
         el.innerHTML = `
           <div class="slot-top">
             <div class="slot-title">
               <div class="slot-num">Slot ${i+1}</div>
-              <p class="slot-name">${c ? escapeHtml(c.Name) : "— Empty —"}</p>
+              <p class="slot-name">${escapeHtml(headerName)}</p>
               <div class="slot-sub">
-                ${c ? `<span class="tag accent">${escapeHtml(c.Class || "—")}</span><span class="tag">${escapeHtml(c.Species || "—")}</span>` : `<span class="muted">Pick a creature from the database.</span>`}
+                ${fusion ? `<span class="tag accent">${escapeHtml(classTag || "—")}</span><span class="tag">${escapeHtml(speciesTag || "—")}</span>` : `<span class="muted">Pick parents from the database.</span>`}
               </div>
+              ${fusionChip ? `<div style="margin-top:6px">${fusionChip}</div>` : ``}
+              ${fusion ? `<div class="small muted" style="margin-top:6px">${fusion.mode === "fusion" ? "Fusion result shown (averaged stats)" : "Partial selection (not fused yet)"}.</div>` : ``}
             </div>
             <div class="slot-actions">
-              ${c ? `<button class="iconbtn" data-open="${escapeHtml(c.Name)}" title="Open details">ⓘ</button>` : ``}
+              ${(p1 || p2) ? `<button class="iconbtn" data-open="${escapeHtml((p1 || p2).Name)}" title="Open details">ⓘ</button>` : ``}
               <button class="iconbtn danger" data-clear="${i}" title="Clear slot">🗑</button>
             </div>
           </div>
 
-          ${c ? `
-            <div class="trait">
-              <p class="tname">
-                <span><strong>${escapeHtml(traitName)}</strong></span>
-                ${hasMore ? `<span class="link" data-toggletrait="${i}">${expanded ? "Collapse" : "Expand"}</span>` : `<span class="muted small">Preview</span>`}
-              </p>
-              <p class="ttext">${escapeHtml(showText || "—")}</p>
-            </div>
+          ${fusion ? `
+            ${statsLine}
+            ${traitHtml}
 
             <div class="slot-fields">
               <div class="field full">
                 <label>Role</label>
                 <input type="text" value="${escapeHtml(slot.role)}" data-field="role" data-slot="${i}" placeholder="e.g., Carry, Tank, Support..." />
               </div>
+
               <div class="field full">
                 <label>Artifact</label>
                 <input type="text" value="${escapeHtml(slot.artifact)}" data-field="artifact" data-slot="${i}" placeholder="Artifact name / effect..." />
               </div>
+
               <div class="field">
                 <label>Spell 1</label>
                 <input type="text" value="${escapeHtml(slot.spell1)}" data-field="spell1" data-slot="${i}" placeholder="Spell..." />
@@ -941,6 +1151,7 @@
                 <label>Spell 3</label>
                 <input type="text" value="${escapeHtml(slot.spell3)}" data-field="spell3" data-slot="${i}" placeholder="Spell..." />
               </div>
+
               <div class="field full">
                 <label>Notes</label>
                 <textarea data-field="notes" data-slot="${i}" placeholder="Synergies, triggers, constraints...">${escapeHtml(slot.notes)}</textarea>
@@ -949,9 +1160,9 @@
           ` : `
             <div class="slot-empty">
               <strong>How to fill this slot:</strong><br/>
-              • Use the left panel to search/filter creatures<br/>
-              • Click a creature to open details<br/>
-              • Click “＋ Slot ${i+1}” to assign it here
+              • Click a creature in the left panel to open details<br/>
+              • Choose <b>P1 → Slot ${i+1}</b> (species parent) and <b>P2 → Slot ${i+1}</b> (class parent)<br/>
+              • Fusion name displays as <b>Parent1/Parent2</b>
             </div>
 
             <div class="slot-fields">
@@ -972,8 +1183,9 @@
 
       root.appendChild(frag);
 
-      $$("[data-clear]").forEach(btn => btn.addEventListener("click", () => removeCreatureFromSlot(Number(btn.dataset.clear))));
+      $$("[data-clear]").forEach(btn => btn.addEventListener("click", () => clearSlot(Number(btn.dataset.clear))));
       $$("[data-open]").forEach(btn => btn.addEventListener("click", () => openDetails(btn.dataset.open)));
+
       $$("[data-toggletrait]").forEach(btn => {
         btn.addEventListener("click", () => {
           const idx = Number(btn.dataset.toggletrait);
@@ -986,12 +1198,10 @@
       $$("[data-field]").forEach(input => {
         const slotIdx = Number(input.dataset.slot);
         const field = input.dataset.field;
-
         const handler = () => {
           state.team[slotIdx][field] = input.value ?? "";
           save();
         };
-
         input.addEventListener("input", handler);
         input.addEventListener("change", handler);
       });
@@ -1033,10 +1243,19 @@
       dupToggle.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); flipDup(); } });
 
       $("#drawerClose").addEventListener("click", closeDetails);
-      $("#overlay").addEventListener("click", closeDetails);
+
+      $("#overlay").addEventListener("click", () => {
+        if ($("#importModal").classList.contains("show")) closeImport();
+        else closeDetails();
+      });
       $("#drawer").addEventListener("click", (e) => e.stopPropagation());
 
-      window.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDetails(); });
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape"){
+          if ($("#importModal").classList.contains("show")) closeImport();
+          else closeDetails();
+        }
+      });
 
       $("#btnClear").addEventListener("click", () => {
         if (confirm("Clear your team? This cannot be undone (unless you exported).")) clearTeam();
@@ -1057,34 +1276,39 @@
         toast("Exported JSON");
       });
 
-      // Import modal controls
-      $("#btnImport").addEventListener("click", () => {
-        $("#importText").value = "";
-        $("#importFile").value = "";
-        $("#importModal").classList.add("show");
-        $("#overlay").classList.add("show");
-      });
-      $("#importClose").addEventListener("click", () => {
-        $("#importModal").classList.remove("show");
-        $("#overlay").classList.remove("show");
-      });
-      $("#btnImportCancel").addEventListener("click", () => {
-        $("#importModal").classList.remove("show");
-        $("#overlay").classList.remove("show");
-      });
+      $("#btnImport").addEventListener("click", openImport);
+      $("#importClose").addEventListener("click", closeImport);
+      $("#btnImportCancel").addEventListener("click", closeImport);
       $("#btnImportApply").addEventListener("click", () => {
         const txt = $("#importText").value.trim();
         if (!txt){ toast("Paste JSON or choose a file"); return; }
-        try{ applyImport(JSON.parse(txt)); $("#importModal").classList.remove("show"); $("#overlay").classList.remove("show"); }
+        try{ applyImport(JSON.parse(txt)); closeImport(); }
         catch(err){ alert("Import failed: " + (err && err.message ? err.message : String(err))); }
       });
+
       $("#importFile").addEventListener("change", async (e) => {
         const file = e.target.files && e.target.files[0];
         if (!file) return;
-        const text = await file.text();
-        $("#importText").value = text;
-        toast("File loaded — click Apply Import");
+        try{
+          const text = await file.text();
+          $("#importText").value = text;
+          toast("File loaded — click Apply Import");
+        }catch(err){
+          alert("Could not read file: " + (err && err.message ? err.message : String(err)));
+        }
       });
+    }
+
+    function openImport(){
+      $("#importText").value = "";
+      $("#importFile").value = "";
+      $("#importModal").classList.add("show");
+      $("#overlay").classList.add("show");
+      setTimeout(()=> $("#importText").focus(), 30);
+    }
+    function closeImport(){
+      $("#importModal").classList.remove("show");
+      $("#overlay").classList.remove("show");
     }
 
     /******************************************************************
@@ -1100,9 +1324,10 @@
         renderBanner(false, "Could not load creatures.json. Check URL and JSON validity.");
       }
 
-      rebuildIndexes(); // <- now works with lowercase keys
+      rebuildIndexes();
 
       load();
+
       $("#qName").value = state.filters.qName;
       $("#qTrait").value = state.filters.qTrait;
       $("#sortBy").value = state.filters.sortBy;
@@ -1112,7 +1337,6 @@
       renderAll();
 
       console.log("DB ready:", DB.length);
-      console.log("First normalized:", DB[0]);
     })();
   </script>
 </body>
