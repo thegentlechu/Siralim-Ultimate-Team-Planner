@@ -859,12 +859,16 @@ async function loadCreatures() {
       };
     }
 
-    const DB = CREATURES.map(normalizeCreature).filter(c => c.Name);
+   let DB = [];
+let byName = new Map();
 
-    const byName = new Map();
-    for (const c of DB){
-      if (!byName.has(c.Name)) byName.set(c.Name, c);
-    }
+function rebuildIndexes(){
+  DB = CREATURES.map(normalizeCreature).filter(c => c.Name);
+  byName = new Map();
+  for (const c of DB){
+    if (!byName.has(c.Name)) byName.set(c.Name, c);
+  }
+}
 
     const state = {
       settings: { allowDuplicates: false },
@@ -1438,6 +1442,7 @@ async function loadCreatures() {
     (async function init(){
   try {
     await loadCreatures();
+    rebuildIndexes();
   } catch (e) {
     console.error(e);
     alert("Could not load creatures.json. Make sure it's in the repo root next to index.html.");
