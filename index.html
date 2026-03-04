@@ -36,6 +36,7 @@
         radial-gradient(900px 600px at 35% 85%, rgba(59,130,246,0.12), transparent 55%),
         linear-gradient(180deg, #070a13, #0b1020);
       overflow:hidden;
+      color-scheme: dark; /* improves native control contrast on many browsers */
     }
     a{color:inherit}
     .app{
@@ -236,12 +237,14 @@
       font-size:11px;
       color: var(--muted2);
     }
+
+    /* Stronger contrast on inputs/selects */
     input[type="text"], select, textarea{
       width:100%;
       padding:10px 10px;
       border-radius: 12px;
-      border:1px solid rgba(255,255,255,0.14);
-      background: rgba(0,0,0,0.20);
+      border:1px solid rgba(255,255,255,0.20);
+      background: rgba(0,0,0,0.35);
       color: var(--text);
       outline:none;
       transition: box-shadow .15s ease, border-color .15s ease, background .15s ease;
@@ -250,10 +253,17 @@
     textarea{min-height:84px; resize:vertical}
     input[type="text"]:focus, select:focus, textarea:focus{
       box-shadow: var(--ring);
-      border-color: rgba(124,92,255,0.45);
-      background: rgba(0,0,0,0.26);
+      border-color: rgba(124,92,255,0.55);
+      background: rgba(0,0,0,0.45);
     }
     select{cursor:pointer}
+
+    /* Improve option contrast (browser support varies) */
+    select option{
+      background:#0b1020;
+      color:rgba(255,255,255,0.92);
+    }
+
     .sort-row{
       display:flex;
       gap:10px;
@@ -299,7 +309,7 @@
     .row{
       display:flex;
       justify-content:space-between;
-      gap:10px;
+      gap:12px;
       align-items:flex-start;
     }
     .name{
@@ -309,7 +319,7 @@
       min-width:0;
     }
     .tags{
-      margin-top:4px;
+      margin-top:6px;
       display:flex;
       gap:6px;
       flex-wrap:wrap;
@@ -322,6 +332,7 @@
       background: rgba(0,0,0,0.16);
       color: var(--muted);
       max-width: 100%;
+      white-space:nowrap;
     }
     .tag.accent{border-color: rgba(124,92,255,0.35); color: rgba(255,255,255,0.85); background: rgba(124,92,255,0.10)}
     .tag.good{border-color: rgba(34,197,94,0.35); color: rgba(255,255,255,0.85); background: rgba(34,197,94,0.10)}
@@ -329,12 +340,11 @@
       font-family: var(--mono);
       font-size:11px;
       color: rgba(255,255,255,0.78);
-      margin-top:8px;
+      margin-top:10px;
       display:flex;
       gap:10px;
       flex-wrap:wrap;
-      justify-content:flex-end;
-      text-align:right;
+      justify-content:flex-start; /* FIX: no more weird right-justified wrapping */
     }
     .statline span{opacity:0.9}
     .muted{color: var(--muted2)}
@@ -398,8 +408,8 @@
       width:34px;height:34px;
       border-radius: 12px;
       border:1px solid rgba(255,255,255,0.12);
-      background: rgba(0,0,0,0.20);
-      color: rgba(255,255,255,0.85);
+      background: rgba(0,0,0,0.25);
+      color: rgba(255,255,255,0.88);
       cursor:pointer;
       display:inline-flex;
       align-items:center;
@@ -409,7 +419,7 @@
     }
     .iconbtn:hover{background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.20)}
     .iconbtn:active{transform: scale(0.98)}
-    .iconbtn.danger{border-color: rgba(239,68,68,0.35); background: rgba(239,68,68,0.10)}
+    .iconbtn.danger{border-color: rgba(239,68,68,0.35); background: rgba(239,68,68,0.12)}
     .slot .slot-sub{
       display:flex;
       gap:6px;
@@ -419,7 +429,7 @@
     }
     .trait{
       border:1px solid rgba(255,255,255,0.10);
-      background: rgba(0,0,0,0.18);
+      background: rgba(0,0,0,0.20);
       border-radius: 14px;
       padding:10px;
     }
@@ -437,15 +447,17 @@
       color: var(--muted);
       margin:0;
       line-height:1.35;
+      word-break: break-word; /* helps long text */
     }
     .link{
       font-size:11px;
-      color: rgba(255,255,255,0.85);
-      opacity:.85;
+      color: rgba(255,255,255,0.9);
+      opacity:.9;
       text-decoration:none;
-      border-bottom:1px dashed rgba(255,255,255,0.25);
+      border-bottom:1px dashed rgba(255,255,255,0.30);
       cursor:pointer;
       user-select:none;
+      white-space:nowrap;
     }
     .link:hover{opacity:1}
 
@@ -471,23 +483,27 @@
       line-height:1.4;
     }
 
-    /* Drawer / modal */
+    /* Drawer / overlay FIXES */
     .drawer{
-      position:absolute;
-      top:0; right:0;
+      position:fixed;                 /* FIX: detach from panel stacking context */
+      top:14px;
+      right:14px;
       width: 420px;
-      max-width: 92vw;
-      height:100%;
+      max-width: calc(100vw - 28px);
+      height: calc(100vh - 28px);
       transform: translateX(105%);
       transition: transform .22s ease;
-      border-left:1px solid rgba(255,255,255,0.10);
+      border:1px solid rgba(255,255,255,0.14);
+      border-radius: 20px;
       background: linear-gradient(180deg, rgba(15,20,40,0.98), rgba(10,14,28,0.98));
       backdrop-filter: blur(12px);
       box-shadow: -20px 0 60px rgba(0,0,0,0.50);
-      z-index:30;
+      z-index:60;                     /* FIX: above overlay */
       display:flex;
       flex-direction:column;
       min-height:0;
+      overflow:hidden;
+      pointer-events:auto;            /* ensures clickable */
     }
     .drawer.open{transform: translateX(0)}
     .drawer header{
@@ -551,7 +567,7 @@
     .drawer p{margin:0; color: var(--muted); font-size:12px; line-height:1.45}
     .drawer .addrow{
       display:grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr); /* FIX: more space */
       gap:10px;
       margin-top:12px;
     }
@@ -560,7 +576,7 @@
       position:fixed;
       inset:0;
       background: rgba(0,0,0,0.55);
-      z-index:25;
+      z-index:50;               /* FIX: below drawer */
       display:none;
     }
     .overlay.show{display:block}
@@ -568,7 +584,7 @@
     .modal{
       position:fixed;
       inset:0;
-      z-index:50;
+      z-index:80;
       display:none;
       align-items:center;
       justify-content:center;
@@ -604,7 +620,7 @@
       transform: translateX(-50%) translateY(20px);
       opacity:0;
       transition: opacity .18s ease, transform .18s ease;
-      z-index:80;
+      z-index:90;
       background: rgba(0,0,0,0.60);
       border:1px solid rgba(255,255,255,0.16);
       color: rgba(255,255,255,0.92);
@@ -621,13 +637,22 @@
       transform: translateX(-50%) translateY(0);
     }
 
+    /* Make DB cards stack nicely on narrow cards */
+    @media (max-width: 520px){
+      .row{flex-direction:column}
+      .statline{justify-content:flex-start}
+    }
     @media (max-width: 980px){
       body{overflow:auto}
       .app{height:auto; min-height:100%; overflow:visible}
       .content{grid-template-columns: 1fr; overflow:visible}
       .panel{min-height: 520px}
-      .drawer{position:fixed; height: 100vh;}
       .builder-grid{grid-template-columns: 1fr;}
+      .drawer{
+        top:10px; right:10px;
+        height: calc(100vh - 20px);
+        max-width: calc(100vw - 20px);
+      }
     }
   </style>
 </head>
@@ -646,15 +671,9 @@
           <div class="dot" aria-hidden="true"></div>
           <div class="label">Allow duplicates</div>
         </div>
-        <button class="btn" id="btnExport" title="Download a JSON file you can share">
-          ⤓ Export Team
-        </button>
-        <button class="btn" id="btnImport" title="Paste JSON or import a file to restore a team">
-          ⤒ Import Team
-        </button>
-        <button class="btn danger" id="btnClear" title="Clear the party slots and notes">
-          ✕ Clear Team
-        </button>
+        <button class="btn" id="btnExport" title="Download a JSON file you can share">⤓ Export Team</button>
+        <button class="btn" id="btnImport" title="Paste JSON or import a file to restore a team">⤒ Import Team</button>
+        <button class="btn danger" id="btnClear" title="Clear the party slots and notes">✕ Clear Team</button>
       </div>
     </div>
 
@@ -707,9 +726,7 @@
                     <option value="Tankiness">Tankiness</option>
                   </select>
                 </div>
-                <button class="btn" id="btnSortDir" title="Toggle ascending/descending">
-                  ↓ Desc
-                </button>
+                <button class="btn" id="btnSortDir" title="Toggle ascending/descending">↓ Desc</button>
               </div>
             </div>
           </div>
@@ -726,20 +743,6 @@
             Replace the <span style="font-family:var(--mono)">CREATURES</span> constant below with your full JSON records to use the complete database.
           </div>
         </div>
-
-        <!-- Detail Drawer -->
-        <div class="drawer" id="drawer" aria-hidden="true">
-          <header>
-            <div class="title">
-              <h3 id="dName">—</h3>
-              <div class="meta" id="dMeta"></div>
-            </div>
-            <button class="iconbtn" id="drawerClose" title="Close (Esc)">✕</button>
-          </header>
-          <div class="body" id="dBody">
-            <!-- filled by JS -->
-          </div>
-        </div>
       </section>
 
       <!-- Party Builder Panel -->
@@ -750,9 +753,7 @@
             <div class="hint">Six slots. Each slot stores creature selection + role/artifact/spells/notes. Autosaves to localStorage.</div>
           </div>
           <div style="display:flex; gap:10px; align-items:center;">
-            <div class="pill" title="Saved locally in your browser">
-              💾 Autosave: <span id="saveStatus">Ready</span>
-            </div>
+            <div class="pill" title="Saved locally in your browser">💾 Autosave: <span id="saveStatus">Ready</span></div>
           </div>
         </div>
         <div class="panel-body">
@@ -763,6 +764,18 @@
   </div>
 
   <div class="overlay" id="overlay"></div>
+
+  <!-- Detail Drawer (moved outside panels + fixed positioning) -->
+  <div class="drawer" id="drawer" aria-hidden="true">
+    <header>
+      <div class="title">
+        <h3 id="dName">—</h3>
+        <div class="meta" id="dMeta"></div>
+      </div>
+      <button class="iconbtn" id="drawerClose" title="Close (Esc)">✕</button>
+    </header>
+    <div class="body" id="dBody"></div>
+  </div>
 
   <!-- Import Modal -->
   <div class="modal" id="importModal" role="dialog" aria-modal="true" aria-labelledby="importTitle">
@@ -798,57 +811,15 @@
     /******************************************************************
      * DATA
      * Replace this constant with your full dataset (array of records).
-     *
-     * Required fields per record:
-     *  Name, Species, Class,
-     *  Health, Attack, Intelligence, Defense, Speed, Tankiness, Total,
-     *  R. Depth (or Realm Depth), Source,
-     *  Trait Name, Item Name, Trait Description
      ******************************************************************/
     const CREATURES = [
-      /* --- SAMPLE DATA (so the app works immediately) --- */
-      {"Name":"Crypt Bat","Species":"Bat","Class":"Chaos","Health":28,"Attack":23,"Intelligence":13,"Defense":13,"Speed":28,"Tankiness":20.5,"Total":105,"R. Depth":22,"Source":"Great Pandemonium, Arachnid Nest, Damarel","Trait Name":"Bombardment","Item Name":"Crypt Bat Wings","Trait Description":"After an ally Attacks, this creature deals damage to the target equal to 35% of its Attack."},
-      {"Name":"Mutated Pulse Bat","Species":"Bat","Class":"Chaos","Health":27,"Attack":23,"Intelligence":13,"Defense":13,"Speed":28,"Tankiness":20,"Total":104,"R. Depth":60,"Source":"Great Pandemonium, Arachnid Nest, Damarel","Trait Name":"Screeching Barrage","Item Name":"Mutated Pulse Bat Wings","Trait Description":"After an ally Attacks, this creature deals damage to enemies equal to 25% of its Speed."},
-      {"Name":"Mutated Vampire Bat","Species":"Bat","Class":"Chaos","Health":27,"Attack":22,"Intelligence":12,"Defense":13,"Speed":28,"Tankiness":20,"Total":102,"R. Depth":45,"Source":"Great Pandemonium, Arachnid Nest, Damarel","Trait Name":"Vampiric Aura","Item Name":"Mutated Vampire Bat Wings","Trait Description":"After an ally Attacks, your creatures recover Health equal to 25% of the damage dealt."},
-      {"Name":"Pulse Bat","Species":"Bat","Class":"Chaos","Health":28,"Attack":23,"Intelligence":13,"Defense":14,"Speed":28,"Tankiness":20.5,"Total":106,"R. Depth":36,"Source":"Great Pandemonium, Arachnid Nest, Damarel","Trait Name":"Shockwave","Item Name":"Pulse Bat Wings","Trait Description":"After an ally Attacks, this creature deals damage to the target equal to 35% of its Speed."},
-      {"Name":"Vampire Bat","Species":"Bat","Class":"Chaos","Health":29,"Attack":23,"Intelligence":13,"Defense":14,"Speed":28,"Tankiness":21.5,"Total":107,"R. Depth":12,"Source":"Great Pandemonium, Arachnid Nest, Damarel","Trait Name":"Vampirism","Item Name":"Vampire Bat Wings","Trait Description":"After an ally Attacks, your creatures recover Health equal to 25% of the damage dealt."},
-      {"Name":"Vampire Bat (Nether)","Species":"Bat","Class":"Chaos","Health":32,"Attack":26,"Intelligence":14,"Defense":16,"Speed":32,"Tankiness":24,"Total":120,"R. Depth":null,"Source":"Nether Creatures","Trait Name":"Nether Vampirism","Item Name":"Nether Vampire Bat Wings","Trait Description":"After an ally Attacks, your creatures recover Health equal to 25% of the damage dealt. (Nether variant.)"},
-      {"Name":"Crypt Bat (Nether)","Species":"Bat","Class":"Chaos","Health":31,"Attack":26,"Intelligence":14,"Defense":15,"Speed":33,"Tankiness":23.5,"Total":119,"R. Depth":null,"Source":"Nether Creatures","Trait Name":"Nether Bombardment","Item Name":"Nether Crypt Bat Wings","Trait Description":"After an ally Attacks, this creature deals damage to the target equal to 35% of its Attack. (Nether variant.)"},
       {"Name":"Pulse Bat (Nether)","Species":"Bat","Class":"Chaos","Health":31,"Attack":26,"Intelligence":14,"Defense":16,"Speed":33,"Tankiness":23.5,"Total":120,"R. Depth":null,"Source":"Nether Creatures","Trait Name":"Nether Shockwave","Item Name":"Nether Pulse Bat Wings","Trait Description":"After an ally Attacks, this creature deals damage to the target equal to 35% of its Speed. (Nether variant.)"},
-      {"Name":"Mutated Crypt Bat","Species":"Bat","Class":"Chaos","Health":27,"Attack":23,"Intelligence":13,"Defense":13,"Speed":28,"Tankiness":20,"Total":104,"R. Depth":75,"Source":"Great Pandemonium, Arachnid Nest, Damarel","Trait Name":"Barrage","Item Name":"Mutated Crypt Bat Wings","Trait Description":"After an ally Attacks, this creature deals damage to the target equal to 25% of its Attack."},
-      {"Name":"Invidia Sin","Species":"Sin","Class":"Death","Health":33,"Attack":22,"Intelligence":30,"Defense":19,"Speed":15,"Tankiness":26,"Total":119,"R. Depth":28,"Source":"Path of the Damned","Trait Name":"Envy","Item Name":"Invidia's Mirror","Trait Description":"At the start of battle, this creature gains a random buff from each enemy."},
-      {"Name":"Aurum Sin","Species":"Sin","Class":"Life","Health":29,"Attack":16,"Intelligence":32,"Defense":17,"Speed":18,"Tankiness":23,"Total":112,"R. Depth":26,"Source":"Path of the Damned","Trait Name":"Greed","Item Name":"Aurum's Coin","Trait Description":"Your creatures gain 10% more resources from battle rewards."},
-      {"Name":"Gula Sin","Species":"Sin","Class":"Nature","Health":35,"Attack":22,"Intelligence":26,"Defense":20,"Speed":12,"Tankiness":27,"Total":115,"R. Depth":28,"Source":"Path of the Damned","Trait Name":"Gluttony","Item Name":"Gula's Ladle","Trait Description":"After your creatures consume a healing effect, they gain additional healing equal to 15% of their Maximum Health."},
-      {"Name":"Luxuria Sin","Species":"Sin","Class":"Sorcery","Health":27,"Attack":14,"Intelligence":35,"Defense":15,"Speed":20,"Tankiness":21,"Total":111,"R. Depth":28,"Source":"Path of the Damned","Trait Name":"Lust","Item Name":"Luxuria's Rose","Trait Description":"At the start of your turn, enemies have a small chance to become Charmed."},
-      {"Name":"Irae Sin","Species":"Sin","Class":"Chaos","Health":31,"Attack":29,"Intelligence":16,"Defense":18,"Speed":18,"Tankiness":24,"Total":112,"R. Depth":28,"Source":"Path of the Damned","Trait Name":"Wrath","Item Name":"Irae's Blade","Trait Description":"After this creature deals damage, it has a chance to attack again."},
-      {"Name":"Ragefang","Species":"Warg","Class":"Chaos","Health":29,"Attack":31,"Intelligence":12,"Defense":16,"Speed":20,"Tankiness":23,"Total":108,"R. Depth":18,"Source":"Great Pandemonium","Trait Name":"Blood Hunt","Item Name":"Ragefang Claw","Trait Description":"This creature deals 15% more damage to enemies below 50% Health."},
-      {"Name":"Azure Dragon","Species":"Dragon","Class":"Sorcery","Health":28,"Attack":18,"Intelligence":34,"Defense":17,"Speed":16,"Tankiness":22,"Total":113,"R. Depth":30,"Source":"Kingdom of Heretics","Trait Name":"Arcane Scales","Item Name":"Azure Scale","Trait Description":"Your creatures take 10% less damage from spells."},
-      {"Name":"Stone Golem","Species":"Golem","Class":"Order","Health":38,"Attack":20,"Intelligence":10,"Defense":30,"Speed":8,"Tankiness":31,"Total":106,"R. Depth":10,"Source":"Realm of the Gods","Trait Name":"Immovable","Item Name":"Golem Core","Trait Description":"This creature has a chance to ignore debuffs that would be applied to it."},
-      {"Name":"Verdant Dryad","Species":"Dryad","Class":"Nature","Health":30,"Attack":14,"Intelligence":30,"Defense":16,"Speed":20,"Tankiness":23,"Total":110,"R. Depth":14,"Source":"Titan's Wound","Trait Name":"Regrowth","Item Name":"Dryad Seed","Trait Description":"At the start of battle, your creatures recover 10% Health."},
-      {"Name":"Shade Stalker","Species":"Shade","Class":"Death","Health":26,"Attack":28,"Intelligence":18,"Defense":14,"Speed":26,"Tankiness":20,"Total":112,"R. Depth":22,"Source":"Path of the Damned","Trait Name":"Night Prowler","Item Name":"Shade Cloak","Trait Description":"This creature gains Speed after enemies take damage over time."},
-      {"Name":"Clockwork Spider","Species":"Spider","Class":"Order","Health":24,"Attack":26,"Intelligence":14,"Defense":18,"Speed":30,"Tankiness":20,"Total":112,"R. Depth":20,"Source":"The Barrens","Trait Name":"Precision Web","Item Name":"Clockwork Thread","Trait Description":"After an ally Attacks, this creature has a chance to inflict Snare on the target."},
-      {"Name":"Frost Wisp","Species":"Wisp","Class":"Life","Health":22,"Attack":10,"Intelligence":34,"Defense":14,"Speed":30,"Tankiness":18,"Total":110,"R. Depth":16,"Source":"Frozen Lake","Trait Name":"Chill Aura","Item Name":"Wisp Lantern","Trait Description":"At the start of battle, enemies have a chance to be Frozen."},
-      {"Name":"Ember Imp","Species":"Imp","Class":"Chaos","Health":20,"Attack":24,"Intelligence":18,"Defense":12,"Speed":34,"Tankiness":16,"Total":108,"R. Depth":8,"Source":"Great Pandemonium","Trait Name":"Kindling","Item Name":"Imp Ember","Trait Description":"After this creature Attacks, it has a chance to Burn the target."},
-      {"Name":"Iron Sentinel","Species":"Construct","Class":"Order","Health":36,"Attack":24,"Intelligence":10,"Defense":26,"Speed":10,"Tankiness":30,"Total":106,"R. Depth":12,"Source":"Realm of the Gods","Trait Name":"Bulwark Protocol","Item Name":"Sentinel Plate","Trait Description":"Your creatures gain a small amount of Damage Reduction at the start of battle."},
-      {"Name":"Sunlit Unicorn","Species":"Unicorn","Class":"Life","Health":30,"Attack":14,"Intelligence":28,"Defense":18,"Speed":22,"Tankiness":24,"Total":112,"R. Depth":18,"Source":"Azure Dream","Trait Name":"Radiance","Item Name":"Unicorn Horn","Trait Description":"After your creatures heal, they gain a small buff."},
-      {"Name":"Venom Wasp","Species":"Wasp","Class":"Nature","Health":22,"Attack":28,"Intelligence":12,"Defense":12,"Speed":34,"Tankiness":17,"Total":108,"R. Depth":10,"Source":"Arachnid Nest","Trait Name":"Toxic Stinger","Item Name":"Wasp Barb","Trait Description":"After this creature Attacks, it has a chance to Poison the target."},
-      {"Name":"Abyssal Leviathan","Species":"Leviathan","Class":"Death","Health":40,"Attack":30,"Intelligence":18,"Defense":20,"Speed":10,"Tankiness":33,"Total":118,"R. Depth":40,"Source":"Depths of the Void","Trait Name":"Drown","Item Name":"Leviathan Fin","Trait Description":"After an enemy takes damage, it has a chance to lose Speed."},
-      {"Name":"Arcane Mimic","Species":"Mimic","Class":"Sorcery","Health":26,"Attack":16,"Intelligence":32,"Defense":16,"Speed":20,"Tankiness":21,"Total":110,"R. Depth":22,"Source":"Kingdom of Heretics","Trait Name":"Copycat","Item Name":"Mimic Chestplate","Trait Description":"At the start of battle, this creature copies a random spell from each enemy."},
-      {"Name":"Barkbeard Ent","Species":"Ent","Class":"Nature","Health":38,"Attack":22,"Intelligence":16,"Defense":22,"Speed":10,"Tankiness":31,"Total":108,"R. Depth":24,"Source":"Titan's Wound","Trait Name":"Rooted","Item Name":"Ent Bark","Trait Description":"This creature takes reduced damage while it is Defending."},
-      {"Name":"Prismatic Djinn","Species":"Djinn","Class":"Sorcery","Health":24,"Attack":12,"Intelligence":36,"Defense":14,"Speed":26,"Tankiness":19,"Total":112,"R. Depth":34,"Source":"Kingdom of Heretics","Trait Name":"Wish","Item Name":"Djinn Lamp","Trait Description":"At the start of battle, your creatures gain a random buff."},
-      {"Name":"Graveborn Knight","Species":"Knight","Class":"Death","Health":34,"Attack":30,"Intelligence":12,"Defense":18,"Speed":12,"Tankiness":27,"Total":106,"R. Depth":18,"Source":"Path of the Damned","Trait Name":"Undying","Item Name":"Knight's Sigil","Trait Description":"The first time this creature dies each battle, it revives with 30% Health."},
-      {"Name":"Celestial Seraph","Species":"Seraph","Class":"Life","Health":28,"Attack":14,"Intelligence":34,"Defense":18,"Speed":16,"Tankiness":22,"Total":110,"R. Depth":36,"Source":"Azure Dream","Trait Name":"Blessed Chorus","Item Name":"Seraph Feather","Trait Description":"At the start of battle, your creatures gain a small chance to gain a random buff each turn."},
-      {"Name":"Runic Basilisk","Species":"Basilisk","Class":"Order","Health":30,"Attack":26,"Intelligence":14,"Defense":18,"Speed":18,"Tankiness":24,"Total":106,"R. Depth":26,"Source":"The Barrens","Trait Name":"Petrify","Item Name":"Basilisk Eye","Trait Description":"After this creature Attacks, it has a small chance to Stun the target."},
-      {"Name":"Storm Roc","Species":"Roc","Class":"Sorcery","Health":30,"Attack":28,"Intelligence":18,"Defense":16,"Speed":20,"Tankiness":24,"Total":112,"R. Depth":28,"Source":"Kingdom of Heretics","Trait Name":"Gale Force","Item Name":"Roc Feather","Trait Description":"At the start of battle, enemies have a chance to lose Speed."},
-      {"Name":"Cinderhound","Species":"Hound","Class":"Chaos","Health":26,"Attack":30,"Intelligence":14,"Defense":14,"Speed":24,"Tankiness":20,"Total":108,"R. Depth":14,"Source":"Great Pandemonium","Trait Name":"Scorching Bite","Item Name":"Hound Fang","Trait Description":"After this creature Attacks, it has a chance to Burn the target."}
-      /* --- END SAMPLE DATA --- */
+      {"Name":"Vampire Bat","Species":"Bat","Class":"Chaos","Health":29,"Attack":23,"Intelligence":13,"Defense":14,"Speed":28,"Tankiness":21.5,"Total":107,"R. Depth":12,"Source":"Great Pandemonium, Arachnid Nest, Damarel","Trait Name":"Vampirism","Item Name":"Vampire Bat Wings","Trait Description":"After an ally Attacks, your creatures recover Health equal to 25% of the damage dealt."},
+      {"Name":"Crypt Bat","Species":"Bat","Class":"Chaos","Health":28,"Attack":23,"Intelligence":13,"Defense":13,"Speed":28,"Tankiness":20.5,"Total":105,"R. Depth":22,"Source":"Great Pandemonium, Arachnid Nest, Damarel","Trait Name":"Bombardment","Item Name":"Crypt Bat Wings","Trait Description":"After an ally Attacks, this creature deals damage to the target equal to 35% of its Attack."},
+      {"Name":"Invidia Sin","Species":"Sin","Class":"Death","Health":33,"Attack":22,"Intelligence":30,"Defense":19,"Speed":15,"Tankiness":26,"Total":119,"R. Depth":28,"Source":"Path of the Damned","Trait Name":"Envy","Item Name":"Invidia's Mirror","Trait Description":"At the start of battle, this creature gains a random buff from each enemy."}
     ];
 
-    /******************************************************************
-     * APP
-     ******************************************************************/
     const STORAGE_KEY = "siralim_team_planner_v1";
-
     const $ = (sel, root=document) => root.querySelector(sel);
     const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
 
@@ -867,7 +838,6 @@
     }
 
     function normalizeCreature(r){
-      // Support either "R. Depth" or "Realm Depth"
       const realmDepth = (r["R. Depth"] ?? r["Realm Depth"] ?? r["RealmDepth"] ?? null);
       return {
         Name: String(r["Name"] ?? "").trim(),
@@ -890,25 +860,22 @@
 
     const DB = CREATURES.map(normalizeCreature).filter(c => c.Name);
 
-    // Index by Name (unique identifier for MVP)
     const byName = new Map();
     for (const c of DB){
       if (!byName.has(c.Name)) byName.set(c.Name, c);
     }
 
     const state = {
-      settings: {
-        allowDuplicates: false
-      },
+      settings: { allowDuplicates: false },
       filters: {
         qName: "",
         qTrait: "",
         class: "",
         species: "",
         sortBy: "Total",
-        sortDir: "desc" // "asc" | "desc"
+        sortDir: "desc"
       },
-      selected: null, // creature Name
+      selected: null,
       team: Array.from({length:6}, () => ({
         creatureName: null,
         role: "",
@@ -921,9 +888,7 @@
       }))
     };
 
-    function setSaveStatus(msg){
-      $("#saveStatus").textContent = msg;
-    }
+    function setSaveStatus(msg){ $("#saveStatus").textContent = msg; }
 
     function save(){
       const payload = {
@@ -947,7 +912,7 @@
           state.settings.allowDuplicates = !!payload.settings.allowDuplicates;
         }
         if (Array.isArray(payload.team) && payload.team.length === 6){
-          state.team = payload.team.map((s,i) => ({
+          state.team = payload.team.map(s => ({
             creatureName: s.creatureName ?? null,
             role: s.role ?? "",
             artifact: s.artifact ?? "",
@@ -973,12 +938,8 @@
     }
 
     function applyImport(payload){
-      if (!payload || payload.version !== "v1"){
-        throw new Error("Unsupported JSON (expected version v1).");
-      }
-      if (!payload.team || !Array.isArray(payload.team) || payload.team.length !== 6){
-        throw new Error("Invalid team (expected 6 slots).");
-      }
+      if (!payload || payload.version !== "v1") throw new Error("Unsupported JSON (expected version v1).");
+      if (!payload.team || !Array.isArray(payload.team) || payload.team.length !== 6) throw new Error("Invalid team (expected 6 slots).");
       state.settings.allowDuplicates = !!(payload.settings && payload.settings.allowDuplicates);
       state.team = payload.team.map(s => ({
         creatureName: s.creatureName ?? null,
@@ -1021,7 +982,6 @@
       const classSel = $("#fClass");
       const speciesSel = $("#fSpecies");
 
-      // Preserve current selection
       const currentClass = state.filters.class;
       const currentSpecies = state.filters.species;
 
@@ -1056,14 +1016,10 @@
       const {qName, qTrait, class:cls, species, sortBy, sortDir} = state.filters;
 
       let list = DB.filter(c => {
-        const nameOk = !qName ? true : (
-          matchText(c.Name, qName) || matchText(c.Species, qName)
-        );
+        const nameOk = !qName ? true : (matchText(c.Name, qName) || matchText(c.Species, qName));
         const classOk = !cls ? true : c.Class === cls;
         const speciesOk = !species ? true : c.Species === species;
-        const traitOk = !qTrait ? true : (
-          matchText(c["Trait Name"], qTrait) || matchText(c["Trait Description"], qTrait)
-        );
+        const traitOk = !qTrait ? true : (matchText(c["Trait Name"], qTrait) || matchText(c["Trait Description"], qTrait));
         return nameOk && classOk && speciesOk && traitOk;
       });
 
@@ -1072,10 +1028,7 @@
         const bv = Number(b[sortBy]);
         const aN = Number.isFinite(av) ? av : -Infinity;
         const bN = Number.isFinite(bv) ? bv : -Infinity;
-
-        if (aN === bN){
-          return a.Name.localeCompare(b.Name);
-        }
+        if (aN === bN) return a.Name.localeCompare(b.Name);
         return sortDir === "asc" ? (aN - bN) : (bN - aN);
       });
 
@@ -1098,29 +1051,27 @@
         el.setAttribute("aria-label", `Open details for ${c.Name}`);
         el.dataset.name = c.Name;
 
-        const traitPreview = c["Trait Description"] ? c["Trait Description"].slice(0, 110) + (c["Trait Description"].length > 110 ? "…" : "") : "—";
+        const traitPreview = c["Trait Description"] ? c["Trait Description"].slice(0, 140) + (c["Trait Description"].length > 140 ? "…" : "") : "—";
+
+        /* FIX: stats now live under tags, not cramped into a right-hand column */
         el.innerHTML = `
-          <div class="row">
-            <div style="min-width:0;">
-              <p class="name"><strong>${escapeHtml(c.Name)}</strong></p>
-              <div class="tags">
-                <span class="tag accent">${escapeHtml(c.Class || "—")}</span>
-                <span class="tag">${escapeHtml(c.Species || "—")}</span>
-                <span class="tag">${escapeHtml(c["Trait Name"] || "Trait")}</span>
-              </div>
-              <div class="small muted" style="margin-top:8px; line-height:1.35;">
-                ${escapeHtml(traitPreview)}
-              </div>
+          <div>
+            <p class="name"><strong>${escapeHtml(c.Name)}</strong></p>
+            <div class="tags">
+              <span class="tag accent">${escapeHtml(c.Class || "—")}</span>
+              <span class="tag">${escapeHtml(c.Species || "—")}</span>
+              <span class="tag">${escapeHtml(c["Trait Name"] || "Trait")}</span>
             </div>
-            <div style="flex:0 0 auto; text-align:right;">
-              <div class="statline">
-                <span>Total: ${escapeHtml(c.Total)}</span>
-                <span>HP: ${escapeHtml(c.Health)}</span>
-                <span>ATK: ${escapeHtml(c.Attack)}</span>
-                <span>INT: ${escapeHtml(c.Intelligence)}</span>
-                <span>DEF: ${escapeHtml(c.Defense)}</span>
-                <span>SPD: ${escapeHtml(c.Speed)}</span>
-              </div>
+            <div class="statline">
+              <span>Total: ${escapeHtml(c.Total)}</span>
+              <span>HP: ${escapeHtml(c.Health)}</span>
+              <span>ATK: ${escapeHtml(c.Attack)}</span>
+              <span>INT: ${escapeHtml(c.Intelligence)}</span>
+              <span>DEF: ${escapeHtml(c.Defense)}</span>
+              <span>SPD: ${escapeHtml(c.Speed)}</span>
+            </div>
+            <div class="small muted" style="margin-top:8px; line-height:1.35;">
+              ${escapeHtml(traitPreview)}
             </div>
           </div>
         `;
@@ -1150,6 +1101,15 @@
       $("#drawer").setAttribute("aria-hidden","true");
       $("#overlay").classList.remove("show");
       state.selected = null;
+    }
+
+    function kpi(label, value){
+      return `
+        <div class="kpi">
+          <div class="k">${escapeHtml(label)}</div>
+          <div class="v">${escapeHtml(value ?? "—")}</div>
+        </div>
+      `;
     }
 
     function renderDrawer(){
@@ -1210,7 +1170,6 @@
           </div>
           <div class="small muted" style="margin-top:10px; line-height:1.45;">
             Duplicate protection: <strong>${state.settings.allowDuplicates ? "OFF" : "ON"}</strong>
-            ${state.settings.allowDuplicates ? "" : "(toggle “Allow duplicates” in the top bar to add the same creature to multiple slots)."}
           </div>
         </div>
       `;
@@ -1221,15 +1180,6 @@
           assignCreatureToSlot(c.Name, idx);
         });
       });
-    }
-
-    function kpi(label, value){
-      return `
-        <div class="kpi">
-          <div class="k">${escapeHtml(label)}</div>
-          <div class="v">${escapeHtml(value ?? "—")}</div>
-        </div>
-      `;
     }
 
     function assignCreatureToSlot(name, slotIndex){
@@ -1245,7 +1195,6 @@
         }
       }
       state.team[slotIndex].creatureName = name;
-      // reset trait expansion when swapping creature
       state.team[slotIndex].traitExpanded = false;
       save();
       renderSlots();
@@ -1268,9 +1217,6 @@
       state.team.forEach((slot, i) => {
         const c = slot.creatureName ? byName.get(slot.creatureName) : null;
 
-        const el = document.createElement("div");
-        el.className = "slot";
-
         const traitName = c ? (c["Trait Name"] || "—") : "";
         const traitDesc = c ? (c["Trait Description"] || "") : "";
         const expanded = !!slot.traitExpanded;
@@ -1278,6 +1224,9 @@
         const traitShort = traitDesc.length > 140 ? traitDesc.slice(0, 140) + "…" : traitDesc;
         const showText = expanded ? traitDesc : traitShort;
         const hasMore = traitDesc.length > 140;
+
+        const el = document.createElement("div");
+        el.className = "slot";
 
         el.innerHTML = `
           <div class="slot-top">
@@ -1311,7 +1260,7 @@
 
               <div class="field full">
                 <label>Artifact</label>
-                <input type="text" value="${escapeHtml(slot.artifact)}" data-field="artifact" data-slot="${i}" placeholder="e.g., Artifact name / effect notes..." />
+                <input type="text" value="${escapeHtml(slot.artifact)}" data-field="artifact" data-slot="${i}" placeholder="Artifact name / effect notes..." />
               </div>
 
               <div class="field">
@@ -1358,15 +1307,8 @@
 
       root.appendChild(frag);
 
-      // Wire slot interactions
-      $$("[data-clear]").forEach(btn => {
-        btn.addEventListener("click", () => removeCreatureFromSlot(Number(btn.dataset.clear)));
-      });
-
-      $$("[data-open]").forEach(btn => {
-        btn.addEventListener("click", () => openDetails(btn.dataset.open));
-      });
-
+      $$("[data-clear]").forEach(btn => btn.addEventListener("click", () => removeCreatureFromSlot(Number(btn.dataset.clear))));
+      $$("[data-open]").forEach(btn => btn.addEventListener("click", () => openDetails(btn.dataset.open))));
       $$("[data-toggletrait]").forEach(btn => {
         btn.addEventListener("click", () => {
           const idx = Number(btn.dataset.toggletrait);
@@ -1381,8 +1323,7 @@
         const field = input.dataset.field;
 
         const handler = () => {
-          const v = input.value ?? "";
-          state.team[slotIdx][field] = v;
+          state.team[slotIdx][field] = input.value ?? "";
           save();
         };
 
@@ -1398,30 +1339,12 @@
       if (state.selected) renderDrawer();
     }
 
-    /******************************************************************
-     * EVENTS
-     ******************************************************************/
     function bindEvents(){
-      $("#qName").addEventListener("input", (e) => {
-        state.filters.qName = e.target.value || "";
-        renderDb();
-      });
-      $("#qTrait").addEventListener("input", (e) => {
-        state.filters.qTrait = e.target.value || "";
-        renderDb();
-      });
-      $("#fClass").addEventListener("change", (e) => {
-        state.filters.class = e.target.value || "";
-        renderDb();
-      });
-      $("#fSpecies").addEventListener("change", (e) => {
-        state.filters.species = e.target.value || "";
-        renderDb();
-      });
-      $("#sortBy").addEventListener("change", (e) => {
-        state.filters.sortBy = e.target.value;
-        renderDb();
-      });
+      $("#qName").addEventListener("input", (e) => { state.filters.qName = e.target.value || ""; renderDb(); });
+      $("#qTrait").addEventListener("input", (e) => { state.filters.qTrait = e.target.value || ""; renderDb(); });
+      $("#fClass").addEventListener("change", (e) => { state.filters.class = e.target.value || ""; renderDb(); });
+      $("#fSpecies").addEventListener("change", (e) => { state.filters.species = e.target.value || ""; renderDb(); });
+      $("#sortBy").addEventListener("change", (e) => { state.filters.sortBy = e.target.value; renderDb(); });
       $("#btnSortDir").addEventListener("click", () => {
         state.filters.sortDir = (state.filters.sortDir === "desc") ? "asc" : "desc";
         $("#btnSortDir").textContent = state.filters.sortDir === "desc" ? "↓ Desc" : "↑ Asc";
@@ -1434,35 +1357,27 @@
         dupToggle.dataset.on = String(state.settings.allowDuplicates);
         dupToggle.setAttribute("aria-checked", String(state.settings.allowDuplicates));
         save();
-        // drawer text update if open
         if (state.selected) renderDrawer();
         toast(state.settings.allowDuplicates ? "Duplicates allowed" : "Duplicates blocked");
       }
       dupToggle.addEventListener("click", flipDup);
-      dupToggle.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " "){
-          e.preventDefault();
-          flipDup();
-        }
-      });
+      dupToggle.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); flipDup(); } });
 
       $("#drawerClose").addEventListener("click", closeDetails);
+
+      // IMPORTANT: overlay closes the drawer; clicks inside drawer should NOT.
       $("#overlay").addEventListener("click", closeDetails);
+      $("#drawer").addEventListener("click", (e) => e.stopPropagation());
 
       window.addEventListener("keydown", (e) => {
         if (e.key === "Escape"){
-          if ($("#importModal").classList.contains("show")){
-            closeImport();
-          } else {
-            closeDetails();
-          }
+          if ($("#importModal").classList.contains("show")) closeImport();
+          else closeDetails();
         }
       });
 
       $("#btnClear").addEventListener("click", () => {
-        if (confirm("Clear your team? This cannot be undone (unless you exported).")){
-          clearTeam();
-        }
+        if (confirm("Clear your team? This cannot be undone (unless you exported).")) clearTeam();
       });
 
       $("#btnExport").addEventListener("click", () => {
@@ -1485,17 +1400,9 @@
       $("#btnImportCancel").addEventListener("click", closeImport);
       $("#btnImportApply").addEventListener("click", () => {
         const txt = $("#importText").value.trim();
-        if (!txt){
-          toast("Paste JSON or choose a file");
-          return;
-        }
-        try{
-          const payload = JSON.parse(txt);
-          applyImport(payload);
-          closeImport();
-        }catch(err){
-          alert("Import failed: " + (err && err.message ? err.message : String(err)));
-        }
+        if (!txt){ toast("Paste JSON or choose a file"); return; }
+        try{ applyImport(JSON.parse(txt)); closeImport(); }
+        catch(err){ alert("Import failed: " + (err && err.message ? err.message : String(err))); }
       });
 
       $("#importFile").addEventListener("change", async (e) => {
@@ -1523,32 +1430,18 @@
       $("#overlay").classList.remove("show");
     }
 
-    /******************************************************************
-     * ACCEPTANCE TESTS (manual behaviors)
-     * - Searching "Bat" returns Bat creatures (dataset dependent)
-     * - Filtering Class=Chaos only shows Chaos
-     * - Assigning a creature to Slot 2 updates immediately
-     * - Refresh keeps team (localStorage)
-     * - Export JSON can be imported to restore exact team
-     ******************************************************************/
+    function exportPayload(){
+      return { version:"v1", exportedAt:new Date().toISOString(), settings:{...state.settings}, team: state.team.map(s=>({...s})) };
+    }
 
-    // Init
     (function init(){
       load();
-
-      // init inputs with state
       $("#qName").value = state.filters.qName;
       $("#qTrait").value = state.filters.qTrait;
       $("#sortBy").value = state.filters.sortBy;
       $("#btnSortDir").textContent = state.filters.sortDir === "desc" ? "↓ Desc" : "↑ Asc";
-
       bindEvents();
       renderAll();
-
-      // Helpful first-run nudge if using sample data
-      if (DB.length < 80){
-        toast("Sample data loaded — paste full JSON into CREATURES for the complete database");
-      }
     })();
   </script>
 </body>
